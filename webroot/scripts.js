@@ -171,16 +171,55 @@ function exportSvg(svg) {
   downloadURI(svgUri, 'avatar.svg');
 }
 
+partNames = [
+	"backhair", "bust", "neck",
+    "ears", "head", "eyes", "eyebrows",
+    "nose", "mouth", "freckles", "hair", 
+    "glasses", "hat"
+];
+
+async function getPartsList(part) {
+  const response = await fetch(`/parts/${part}/`);
+  const html = await response.text();
+  const root = document.createElement('div');
+  root.innerHTML = html;
+  const links = root.querySelectorAll('a');
+
+  const partList = [];
+  for (let i=0; i < links.length; i++) {
+    const link = links[i];
+    const name = link.getAttribute('href');
+    const tags = link.getAttribute('data-tags').split(' ');
+    const creator = link.getAttribute('data-creator');
+    partList.push({ name, tags, creator });
+  }
+
+  return partList;
+}
+
+async function getPart(part, name) {
+  const response = await fetch(`/parts/${part}/${name}`);
+  const xml = await response.text();
+  return xml;
+}
+
+const spinner = document.createElement('div');
+spinner.classList.add('spinner');
 async function run() {
+  const avatar = document.getElementById('avatar');
+  avatar.replaceChildren(spinner)
+  
   const parts = [];
-  for (let raw of rawSvgParts) {
-    const part = svgParser(raw);
+  for (let partName of partNames) {
+    const partList = await getPartsList(partName);
+    const xml = await getPart(partName, partList[0]['name']);
+    const part = svgParser(xml);
     parts.push(part);
   }
 
   const output = svgBuilder(parts);
 
-  document.getElementById('avatar').appendChild(output);
+  avatar.replaceChildren(output);
 }
 
 function getLiveColorRules() {
