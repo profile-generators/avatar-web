@@ -17,18 +17,21 @@
 */
 
 function rgb2hex(rgb) {
+  // Converts rgb(255, 255, 255) to #ffffff
   return '#' + rgb.substring(4, rgb.length - 1).split(', ')
     .map(c => parseInt(c).toString(16).padStart(2, '0'))
     .join('');
 }
 
 function capitalize(string) {
+  // Makes the first letter of each word uppercase
   return string.split(' ')
     .map(word => word[0].toUpperCase() + word.substring(1))
     .join(' ');
 }
 
 function svgParser(svgString) {
+  // Parses svgString to extract the part layer and the creator
   const root = document.createElement('div');
   root.innerHTML = svgString.replace('<?xml version="1.0" ?>', '');
 
@@ -41,6 +44,8 @@ function svgParser(svgString) {
 }
 
 function svgBuilder(parts) {
+  // Builds a full avatar svg from parts
+
   const root = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   root.setAttribute('width', '124.19042mm');
   root.setAttribute('height', '124.19042mm');
@@ -54,12 +59,14 @@ function svgBuilder(parts) {
   root.setAttribute('xmlns:rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#');
   root.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
 
+  // Combines every creators in the contributors metadata field
   const contributors = new Set();
   for (let { layer, creator } of parts) {
     root.appendChild(layer);
     contributors.add(creator);
   }
 
+  // Metadata with contributors, source and license
   const metadata = document.createElement('metadata');
   metadata.innerHTML = `
     <rdf:RDF>
@@ -91,6 +98,7 @@ function svgBuilder(parts) {
 }
 
 function getElementStyles(element) {
+  // Retrieves all styling from css sheets related to element
   const rules = [];
 
   const sheets = document.styleSheets;
@@ -117,6 +125,7 @@ function getElementStyles(element) {
 }
 
 function downloadURI(uri, name) {
+  // Triggers the download of a base64 uri
   const link = document.createElement("a");
   link.download = name;
   link.href = uri;
@@ -127,6 +136,8 @@ function downloadURI(uri, name) {
 }
 
 function inlineSvgStyles(svg) {
+  // Copies every css style related to svg into the svg itself (inline)
+
   const styledSvg = svg.cloneNode(true);
 
   const stack = [styledSvg];
@@ -143,11 +154,13 @@ function inlineSvgStyles(svg) {
       stack.push(node.children[i]);
     }
   }
-  
+
   return styledSvg;
 }
 
 function exportPng(svg, width) {
+  // Exports svg to png with set width
+
   const styledSvg = inlineSvgStyles(svg);
   const svgUri = URL.createObjectURL(new Blob([styledSvg.outerHTML], { type: 'image/svg+xml' }));
 
@@ -166,19 +179,22 @@ function exportPng(svg, width) {
 }
 
 function exportSvg(svg) {
+  // Exports svg
   const styledSvg = inlineSvgStyles(svg);
   const svgUri = URL.createObjectURL(new Blob([styledSvg.outerHTML], { type: 'image/svg+xml' }));
   downloadURI(svgUri, 'avatar.svg');
 }
 
 partNames = [
-	"backhair", "bust", "neck",
-    "ears", "head", "eyes", "eyebrows",
-    "nose", "mouth", "freckles", "hair", 
-    "glasses", "hat"
+  "backhair", "bust", "neck",
+  "ears", "head", "eyes", "eyebrows",
+  "nose", "mouth", "freckles", "hair",
+  "glasses", "hat"
 ];
 
 async function getPartsList(part) {
+  // Retrieves all the variants of part from the parts server
+
   const response = await fetch(`/parts/${part}/`);
   const html = await response.text();
   const root = document.createElement('div');
@@ -186,7 +202,7 @@ async function getPartsList(part) {
   const links = root.querySelectorAll('a');
 
   const partList = [];
-  for (let i=0; i < links.length; i++) {
+  for (let i = 0; i < links.length; i++) {
     const link = links[i];
     const name = link.getAttribute('href');
     const tags = link.getAttribute('data-tags').split(' ');
@@ -198,17 +214,22 @@ async function getPartsList(part) {
 }
 
 async function getPart(part, name) {
+  // Retrieves a svg part file from the server
   const response = await fetch(`/parts/${part}/${name}`);
   const xml = await response.text();
   return xml;
 }
 
+// A static css spinner
 const spinner = document.createElement('div');
 spinner.classList.add('spinner');
+
 async function run() {
+  // Retrieves parts, builds and displays an avatar
+  
   const avatar = document.getElementById('avatar');
   avatar.replaceChildren(spinner)
-  
+
   const parts = [];
   for (let partName of partNames) {
     const partList = await getPartsList(partName);
@@ -223,6 +244,7 @@ async function run() {
 }
 
 function getLiveColorRules() {
+  // Get live css rules for the color palette
   const rules = {};
 
   const sheets = document.styleSheets;
@@ -244,6 +266,7 @@ function getLiveColorRules() {
   return rules;
 }
 
+// Color palette for avatars
 const palette = [
   'flesh_fill', 'flesh_stroke',
   'flesh2_fill', 'flesh2_stroke',
@@ -261,10 +284,12 @@ const classPalette = palette.map(c => `.${c}`);
 const colorRules = getLiveColorRules();
 
 function updateColor(event) {
+  // Updates css palette rules to the new color
   const className = `.${event.target.id}`;
   colorRules[className].setProperty('fill', event.target.value);
 }
 
+// Builds html color palette editor
 for (let color of palette) {
   const input = document.createElement('input');
   input.setAttribute('id', color);
@@ -287,6 +312,7 @@ for (let color of palette) {
   document.getElementById('colors').appendChild(div);
 }
 
+// Setup download buttons
 document.getElementById('download').addEventListener('click', () => {
   const svg = document.getElementById('avatar').firstElementChild;
   exportPng(svg, 512);
@@ -297,6 +323,7 @@ document.getElementById('download-svg').addEventListener('click', () => {
   exportSvg(svg);
 });
 
+// Start
 window.onload = () => {
   run();
 }
