@@ -19,6 +19,14 @@
 .p4_fill { fill: #ffffff }
 .p4_stroke { stroke: #000000 }
 
+/* Avatar parts hover effect */
+.backhair:hover, .hair:hover, .neck:hover, .bust:hover,
+.ears:hover, .head:hover, .eyes:hover, .eyebrows:hover,
+.nose:hover, .mouth:hover, .freckles:hover, .glasses:hover,
+.hat:hover {
+    filter: opacity(0.5);
+}
+
 /* Website styles */
 body {
     display: flex;
