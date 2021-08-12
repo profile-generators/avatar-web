@@ -1,84 +1,55 @@
 /* Avatar color palette */
-.flesh_fill { fill: #ffe7bd }
-.flesh_stroke { stroke: #e4990c }
-.flesh2_fill { fill: #f9dca4 }
-.flesh2_stroke { stroke: #c28619 }
-.flesh3_fill { fill: #ffdebd }
-.flesh3_stroke { stroke: #e9ac71 }
-.hair_fill { fill: #803300 }
-.hair_stroke { stroke: #3d1a03 }
-.hair2_fill { fill: #383837 }
-.hair2_stroke { stroke: #3d1a03 }
-.eye_color { fill: #d8d5ff }
-.p1_fill { fill: #0f66b8 }
-.p1_stroke { stroke: #000000 }
-.p2_fill { fill: #ffffff }
-.p2_stroke { stroke: #000000 }
-.p3_fill { fill: #ffffff }
-.p3_stroke { stroke: #000000 }
-.p4_fill { fill: #ffffff }
-.p4_stroke { stroke: #000000 }
+.flesh { fill: #ffe7bd }
+.flesh2 { fill: #f7cf88 }
+.flesh3 { fill: #ffdebd }
+.hair { fill: #803300 }
+.hair2 { fill: #383837 }
+.eye { fill: #d8d5ff }
 
-/* Avatar parts hover effect */
-.backhair:hover, .hair:hover, .neck:hover, .bust:hover,
-.ears:hover, .head:hover, .eyes:hover, .eyebrows:hover,
-.nose:hover, .mouth:hover, .freckles:hover, .glasses:hover,
-.hat:hover {
-    filter: opacity(0.5);
-}
+.p1 { fill: #006eb3 }
+.p2 { fill: #008de6 }
+.p3 { fill: #00b39e }
+.p4 { fill: #00e6cb }
 
 /* Website styles */
 body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 h1 {
-    width: 20%;
-    text-align: center;
-    margin: 0 0 20px 0;
+  width: 20%;
+  text-align: center;
+  margin: 0 0 20px 0;
 }
 
 #container {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+#parts {
+  display: flex;
 }
 
 #avatar {
-    display: flex;
-    width: 25%;
+  display: flex;
 }
 
 #colors {
-    display: flex;
-    flex-wrap: wrap;
-
-    width: 25%;
+  display: flex;
+  flex-direction: column;
 }
 
+/*
 @media screen and (max-width: 1200px) {
     #avatar, #colors {
         width: 33%;
     }
 }
-
-@media screen and (max-width: 900px) {
-    #avatar, #colors {
-        width: 50%;
-    }
-}
-
-.colorpicker {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 20%;
-}
-
-.colorpicker label {
-    padding: 0 30px 0 30px;
-}
+*/
 
 .download {
     padding: 5px 20px;

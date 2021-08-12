@@ -268,16 +268,9 @@ function getLiveColorRules() {
 
 // Color palette for avatars
 const palette = [
-  'flesh_fill', 'flesh_stroke',
-  'flesh2_fill', 'flesh2_stroke',
-  'flesh3_fill', 'flesh3_stroke',
-  'hair_fill', 'hair_stroke',
-  'hair2_fill', 'hair2_stroke',
-  'eye_color',
-  'p1_fill', 'p1_stroke',
-  'p2_fill', 'p2_stroke',
-  'p3_fill', 'p3_stroke',
-  'p4_fill', 'p4_stroke'
+  'flesh', 'flesh2', 'flesh3',
+  'hair', 'hair2', 'eye',
+  'p1', 'p2', 'p3', 'p4'
 ];
 
 const classPalette = palette.map(c => `.${c}`);
@@ -289,27 +282,11 @@ function updateColor(event) {
   colorRules[className].setProperty('fill', event.target.value);
 }
 
-// Builds html color palette editor
+// Link color inputs to css properties
 for (let color of palette) {
-  const input = document.createElement('input');
-  input.setAttribute('id', color);
-  input.setAttribute('type', 'color');
+  const input = document.getElementById(color);
   input.setAttribute('value', rgb2hex(colorRules[`.${color}`].getPropertyValue('fill')));
   input.addEventListener('input', updateColor);
-
-  console.log();
-
-  const label = document.createElement('label');
-  label.setAttribute('for', color);
-  label.textContent = capitalize(color.replaceAll('_', ' '));
-
-  const div = document.createElement('div');
-  div.classList.add('colorpicker');
-
-  div.appendChild(label);
-  div.appendChild(input);
-
-  document.getElementById('colors').appendChild(div);
 }
 
 // Setup download buttons
