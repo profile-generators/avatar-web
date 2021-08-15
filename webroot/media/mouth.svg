@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   height="6.8163209mm"
+   id="svg151"
+   version="1.1"
+   viewBox="0 0 20.041874 6.8163208"
+   width="20.041874mm"
+   sodipodi:docname="mouth.svg"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs10" />
+  <sodipodi:namedview
+     id="namedview8"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="1.7938514"
+     inkscape:cx="37.628535"
+     inkscape:cy="-29.266638"
+     inkscape:window-width="1920"
+     inkscape:window-height="1027"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer19" />
+  <g
+     class="mouth"
+     id="layer19"
+     inkscape:groupmode="layer"
+     inkscape:label="mouth_0000"
+     style="display:inline;opacity:1"
+     transform="translate(-52.127581,-69.98072)">
+    <path
+       class="flesh2"
+       d="m 72.169455,71.032371 c -1.870887,3.18191 -4.421948,5.76467 -10.020937,5.76467 -5.598989,0 -8.337139,-3.307728 -10.020937,-5.717897 3.741773,-1.287638 6.73717,-1.204384 10.020937,-0.760048 3.611172,-0.42095 5.367106,-0.691292 10.020937,0.713275 z"
+       id="path10975"
+       style="fill:#6c5d53" />
+    <path
+       d="m 70.602587,71.465022 c -0.701583,0.835335 -3.780879,2.658026 -8.461354,2.665974 -4.680475,0.0079 -6.420969,-1.287337 -8.553058,-2.63708"
+       id="path12013"
+       style="fill:#ffffff" />
+  </g>
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Xavier 'crashoz' Launey</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:source>https://github.com/profile-generators/avatar-parts</dc:source>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>template</rdf:li>
+            <rdf:li>man</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/by/4.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Notice" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Attribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+</svg>
