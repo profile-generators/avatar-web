@@ -19,9 +19,17 @@ body {
 }
 
 h1 {
+  font-family: 'Lobster', cursive;
+  font-size: 3em;
   width: 20%;
   text-align: center;
   margin: 0 0 20px 0;
+}
+
+h2 {
+  font-family: 'Lobster', cursive;
+  font-size: 3em;
+  text-align: center;
 }
 
 #container {
@@ -30,17 +38,73 @@ h1 {
   width: 100%;
 }
 
-#parts {
+/* Avatar panel */
+#middlepanel {
   display: flex;
+  flex-direction: column;
+  width: 50%;
+  align-items: center;
 }
 
 #avatar {
   display: flex;
+  width: 50%;
+  justify-content: center;
+}
+
+/* Color pickers panel */
+
+#rightpanel {
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+  margin-right: 20px;
 }
 
 #colors {
   display: flex;
   flex-direction: column;
+  text-align: right;
+}
+
+.colorpicker {
+  padding-top: 10px;
+}
+
+/* Part pickers panel */
+
+#leftpanel {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+}
+
+#parts {
+  display: flex;
+  flex-wrap: wrap;
+
+}
+
+.partpicker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 40%;
+  height: 100px;
+  margin-right: 20px;
+}
+
+.partpicker img {
+  display: block;
+  margin-bottom: 10px;
+  height: 100%;
+  max-width: 128px;
+}
+
+.partpicker p {
+  display: inline;
+  padding: 0 5px;
 }
 
 /*
@@ -51,9 +115,38 @@ h1 {
 }
 */
 
-.download {
-    padding: 5px 20px;
+.btn {
+  padding: 5px 20px;
+  text-decoration: none;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  border: 1px solid transparent;
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
 }
+
+.btn:focus {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #8c8c8c;
+}
+
+.btn:hover {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+
+.btn:active {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+
+/* Animated loading spinner */
 
 .spinner, .spinner:after {
   border-radius: 50%;
@@ -80,4 +173,25 @@ h1 {
   100% {
     transform: rotate(360deg);
   }
+}
+
+/* CSS navigation arrows */
+
+.arrow {
+  display: inline-block;
+  border-right: 4px solid black;
+  border-bottom: 4px solid black;
+  width: 8px; height: 8px;
+}
+
+.arrow:hover {
+  border-color: #777777;
+}
+
+.arrow.left {
+  transform: rotate(135deg);
+}
+
+.arrow.right {
+  transform: rotate(-45deg);
 }

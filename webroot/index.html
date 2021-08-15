@@ -19,6 +19,10 @@
     <link rel="icon" href="/favicon.ico">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -26,57 +30,148 @@
     <h1>Avatar Creator</h1>
 
     <div id="container">
-        <div id="parts">
+        <div id="leftpanel">
+            <h2>Select your parts</h2>
+            <div id="parts">
+                <div class="partpicker">
+                    <img src="media/hair.svg" alt="hair" />
+                    <div id="hair_part">
+                        <div class="arrow left"></div>
+                        <p>Hair 0 / 0</p>
+                        <div class="arrow right"></div>
+                    </div>
+                </div>
+                <div class="partpicker">
+                    <img src="media/head.svg" alt="head" />
+                    <div id="head_part">
+                        <div class="arrow left"></div>
+                        <p>Head 0 / 0</p>
+                        <div class="arrow right"></div>
+                    </div>
+                </div>
+                <div class="partpicker">
+                    <img src="media/eyes.svg" alt="eyes" />
+                    <div id="eyes_part">
+                        <div class="arrow left"></div>
+                        <p>Eyes 0 / 0</p>
+                        <div class="arrow right"></div>
+                    </div>
+                </div>
+                <div class="partpicker">
+                    <img src="media/eyebrows.svg" alt="eyebrows" />
+                    <div id="eyebrows_part">
+                        <div class="arrow left"></div>
+                        <p>Eyebrows 0 / 0</p>
+                        <div class="arrow right"></div>
+                    </div>
+                </div>
+                <div class="partpicker">
+                    <img src="media/nose.svg" alt="nose" />
+                    <div id="nose_part">
+                        <div class="arrow left"></div>
+                        <p>Nose 0 / 0</p>
+                        <div class="arrow right"></div>
+                    </div>
+                </div>
+                <div class="partpicker">
+                    <img src="media/mouth.svg" alt="mouth" />
+                    <div id="mouth_part">
+                        <div class="arrow left"></div>
+                        <p>Mouth 0 / 0</p>
+                        <div class="arrow right"></div>
+                    </div>
+                </div>
+                <div class="partpicker">
+                    <img src="media/ears.svg" alt="ears" />
+                    <div id="ears_part">
+                        <div class="arrow left"></div>
+                        <p>Ears 0 / 0</p>
+                        <div class="arrow right"></div>
+                    </div>
+                </div>
+                <div class="partpicker">
+                    <img src="media/freckles.svg" alt="freckles" />
+                    <div id="freckles_part">
+                        <div class="arrow left"></div>
+                        <p>Freckles 0 / 0</p>
+                        <div class="arrow right"></div>
+                    </div>
+                </div>
+                <div class="partpicker">
+                    <img src="media/neck.svg" alt="neck" />
+                    <div id="neck_part">
+                        <div class="arrow left"></div>
+                        <p>Neck 0 / 0</p>
+                        <div class="arrow right"></div>
+                    </div>
+                </div>
+                <div class="partpicker">
+                    <img src="media/bust.svg" alt="bust" />
+                    <div id="bust_part">
+                        <div class="arrow left"></div>
+                        <p>Bust 0 / 0</p>
+                        <div class="arrow right"></div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div id="avatar"><div class="spinner"></div></div>
-        <div id="colors">
-            <div class="colorpicker">
-                <label for="flesh">Flesh</label>
-                <input id="flesh" type="color" value="#ffffff" />
+        <div id="middlepanel">
+            <div id="avatar">
+                <div class="spinner"></div>
             </div>
-            <div class="colorpicker">
-                <label for="flesh2">Flesh 2</label>
-                <input id="flesh2" type="color" value="#ffffff" />
+            <div id="buttons">
+                <button id="download-png" class="btn">Download PNG</button>
+                <button id="download-svg" class="btn">Download SVG</button>
             </div>
-            <div class="colorpicker">
-                <label for="flesh3">Flesh 3</label>
-                <input id="flesh3" type="color" value="#ffffff" />
-            </div>
-            <div class="colorpicker">
-                <label for="hair">Hair</label>
-                <input id="hair" type="color" value="#ffffff" />
-            </div>
-            <div class="colorpicker">
-                <label for="hair2">Hair 2</label>
-                <input id="hair2" type="color" value="#ffffff" />
-            </div>
-            <div class="colorpicker">
-                <label for="eye">Eye</label>
-                <input id="eye" type="color" value="#ffffff" />
-            </div>
-            <div class="colorpicker">
-                <label for="p1">Palette 1</label>
-                <input id="p1" type="color" value="#ffffff" />
-            </div>
-            <div class="colorpicker">
-                <label for="p2">Palette 2</label>
-                <input id="p2" type="color" value="#ffffff" />
-            </div>
-            <div class="colorpicker">
-                <label for="p3">Palette 3</label>
-                <input id="p3" type="color" value="#ffffff" />
-            </div>
-            <div class="colorpicker">
-                <label for="p4">Palette 4</label>
-                <input id="p4" type="color" value="#ffffff" />
+        </div>
+        <div id="rightpanel">
+            <h2>Select your colors</h2>
+            <div id="colors">
+                <div class="colorpicker">
+                    <label for="flesh_color">Flesh</label>
+                    <input id="flesh_color" type="color" value="#ffffff" />
+                </div>
+                <div class="colorpicker">
+                    <label for="flesh2_color">Flesh 2</label>
+                    <input id="flesh2_color" type="color" value="#ffffff" />
+                </div>
+                <div class="colorpicker">
+                    <label for="flesh3_color">Flesh 3</label>
+                    <input id="flesh3_color" type="color" value="#ffffff" />
+                </div>
+                <div class="colorpicker">
+                    <label for="hair_color">Hair</label>
+                    <input id="hair_color" type="color" value="#ffffff" />
+                </div>
+                <div class="colorpicker">
+                    <label for="hair2_color">Hair 2</label>
+                    <input id="hair2_color" type="color" value="#ffffff" />
+                </div>
+                <div class="colorpicker">
+                    <label for="eye_color">Eye</label>
+                    <input id="eye_color" type="color" value="#ffffff" />
+                </div>
+                <div class="colorpicker">
+                    <label for="p1_color">Palette 1</label>
+                    <input id="p1_color" type="color" value="#ffffff" />
+                </div>
+                <div class="colorpicker">
+                    <label for="p2_color">Palette 2</label>
+                    <input id="p2_color" type="color" value="#ffffff" />
+                </div>
+                <div class="colorpicker">
+                    <label for="p3_color">Palette 3</label>
+                    <input id="p3_color" type="color" value="#ffffff" />
+                </div>
+                <div class="colorpicker">
+                    <label for="p4_color">Palette 4</label>
+                    <input id="p4_color" type="color" value="#ffffff" />
+                </div>
             </div>
         </div>
     </div>
 
-    <div id="buttons">
-        <button id="download" class=".download">Download PNG</button>
-        <button id="download-svg" class=".download">Download SVG</button>
-    </div>
+
 
     <script src="scripts.js"></script>
 </body>

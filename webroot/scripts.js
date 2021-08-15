@@ -16,6 +16,9 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+const CACHE_SIZE = 10;
+const PRELOAD_SIZE = 2;
+
 function rgb2hex(rgb) {
   // Converts rgb(255, 255, 255) to #ffffff
   return '#' + rgb.substring(4, rgb.length - 1).split(', ')
@@ -104,21 +107,27 @@ function getElementStyles(element) {
   const sheets = document.styleSheets;
   for (let i = 0; i < sheets.length; i++) {
     const sheet = sheets[i];
-    for (let j = 0; j < sheet.cssRules.length; j++) {
-      const rule = sheet.cssRules[j];
 
-      switch (rule.constructor) {
-        case CSSStyleRule:
-          if (element.matches(rule.selectorText)) {
-            for (let k = 0; k < rule.style.length; k++) {
-              const name = rule.style[k];
-              const value = rule.style.getPropertyValue(name);
-              rules.push([name, value]);
+    // May fail with 
+    // DOMException: CSSStyleSheet.cssRules getter: Not allowed to access cross-origin stylesheet
+    // When we have external css sheets
+    try {
+      for (let j = 0; j < sheet.cssRules.length; j++) {
+        const rule = sheet.cssRules[j];
+
+        switch (rule.constructor) {
+          case CSSStyleRule:
+            if (element.matches(rule.selectorText)) {
+              for (let k = 0; k < rule.style.length; k++) {
+                const name = rule.style[k];
+                const value = rule.style.getPropertyValue(name);
+                rules.push([name, value]);
+              }
             }
-          }
-          break;
+            break;
+        }
       }
-    }
+    } catch (e) { }
   }
 
   return rules;
@@ -192,6 +201,9 @@ partNames = [
   "glasses", "hat"
 ];
 
+const parts = {};
+let activeParts = [];
+
 async function getPartsList(part) {
   // Retrieves all the variants of part from the parts server
 
@@ -217,31 +229,38 @@ async function getPart(part, name) {
   // Retrieves a svg part file from the server
   const response = await fetch(`/parts/${part}/${name}`);
   const xml = await response.text();
-  return xml;
+  return svgParser(xml);
+}
+
+function preloadPart(partName, index) {
+  console.log('preload', partName, index);
+
+  const { list, cache, queue } = parts[partName];
+
+  if (index in cache) {
+    console.log('cache hit');
+    const part = cache[index];
+    queue.splice(queue.indexOf(index), 1);
+    queue.unshift(index);
+  } else {
+    console.log('cache miss');
+    const part = getPart(partName, list[index]['name']);
+
+    cache[index] = part;
+    if (Object.keys(cache).length > CACHE_SIZE) {
+      delete cache[queue.pop()];
+    }
+    queue.unshift(index);
+  }
+
+  const output = svgBuilder(activeParts);
+  const avatar = document.getElementById('avatar');
+  avatar.replaceChildren(output);
 }
 
 // A static css spinner
 const spinner = document.createElement('div');
 spinner.classList.add('spinner');
-
-async function run() {
-  // Retrieves parts, builds and displays an avatar
-  
-  const avatar = document.getElementById('avatar');
-  avatar.replaceChildren(spinner)
-
-  const parts = [];
-  for (let partName of partNames) {
-    const partList = await getPartsList(partName);
-    const xml = await getPart(partName, partList[0]['name']);
-    const part = svgParser(xml);
-    parts.push(part);
-  }
-
-  const output = svgBuilder(parts);
-
-  avatar.replaceChildren(output);
-}
 
 function getLiveColorRules() {
   // Get live css rules for the color palette
@@ -250,17 +269,23 @@ function getLiveColorRules() {
   const sheets = document.styleSheets;
   for (let i = 0; i < sheets.length; i++) {
     const sheet = sheets[i];
-    for (let j = 0; j < sheet.cssRules.length; j++) {
-      const rule = sheet.cssRules[j];
 
-      switch (rule.constructor) {
-        case CSSStyleRule:
-          if (classPalette.includes(rule.selectorText)) {
-            rules[rule.selectorText] = rule.style;
-          }
-          break;
+    // May fail with 
+    // DOMException: CSSStyleSheet.cssRules getter: Not allowed to access cross-origin stylesheet
+    // When we have external css sheets
+    try {
+      for (let j = 0; j < sheet.cssRules.length; j++) {
+        const rule = sheet.cssRules[j];
+
+        switch (rule.constructor) {
+          case CSSStyleRule:
+            if (classPalette.includes(rule.selectorText)) {
+              rules[rule.selectorText] = rule.style;
+            }
+            break;
+        }
       }
-    }
+    } catch (e) { }
   }
 
   return rules;
@@ -276,29 +301,102 @@ const palette = [
 const classPalette = palette.map(c => `.${c}`);
 const colorRules = getLiveColorRules();
 
+async function run() {
+  // Setup download buttons
+  document.getElementById('download-png').addEventListener('click', () => {
+    const svg = document.getElementById('avatar').firstElementChild;
+    exportPng(svg, 512);
+  });
+
+  document.getElementById('download-svg').addEventListener('click', () => {
+    const svg = document.getElementById('avatar').firstElementChild;
+    exportSvg(svg);
+  });
+
+  // Setup palette buttons: link color inputs to css properties
+  for (let color of palette) {
+    const input = document.getElementById(`${color}_color`);
+    input.setAttribute('value', rgb2hex(colorRules[`.${color}`].getPropertyValue('fill')));
+    input.addEventListener('input', updateColor);
+  }
+
+  // Retrieves parts, builds and displays an avatar
+
+  const avatar = document.getElementById('avatar');
+  avatar.replaceChildren(spinner)
+
+  const partsPromise = [];
+
+  for (let partName of partNames) {
+    const partList = await getPartsList(partName);
+
+    parts[partName] = {
+      list: partList,
+      index: 0,
+      cache: {},
+      queue: []
+    };
+
+    preloadPart(partName, 0);
+    partsPromise.push(parts[partName].cache[0]);
+  }
+
+  activeParts = await Promise.all(partsPromise);
+
+  const output = svgBuilder(activeParts);
+  avatar.replaceChildren(output);
+
+  // Setup part selection
+  for (let partName of partNames) {
+    if (['backhair', 'glasses', 'hat'].includes(partName)) {
+      continue;
+    }
+    const div = document.getElementById(`${partName}_part`);
+    console.log(partName)
+    const p = div.children[1];
+
+    p.textContent = `${capitalize(partName)} 1 / ${parts[partName].list.length}`;
+
+    const prev = div.children[0];
+    const next = div.children[2];
+    prev.addEventListener('click', () => updatePart(partName, -1));
+    next.addEventListener('click', () => updatePart(partName, +1));
+  }
+}
+
 function updateColor(event) {
   // Updates css palette rules to the new color
-  const className = `.${event.target.id}`;
+  const className = `.${event.target.id.split('_')[0]}`;
   colorRules[className].setProperty('fill', event.target.value);
 }
 
-// Link color inputs to css properties
-for (let color of palette) {
-  const input = document.getElementById(color);
-  input.setAttribute('value', rgb2hex(colorRules[`.${color}`].getPropertyValue('fill')));
-  input.addEventListener('input', updateColor);
+function updatePart(partName, delta) {
+  const div = document.getElementById(`${partName}_part`);
+  const p = div.children[1];
+
+  const len = parts[partName].list.length;
+  let newIndex = parts[partName].index + delta;
+  newIndex = newIndex < 0 ? len + newIndex : newIndex >= len ? newIndex - len : newIndex;
+
+  for (let i = newIndex - PRELOAD_SIZE; i < newIndex + PRELOAD_SIZE; i++) {
+    const index = i < 0 ? len + i : i >= len ? i - len : i;
+    if (index < 0 || index >= len) {
+      continue;
+    }
+
+    console.log('preload', partName, index);
+    preloadPart(partName, index);
+  }
+
+  parts[partName].index = newIndex;
+  parts[partName].cache[newIndex].then(part => {
+    activeParts[partNames.indexOf(partName)] = part;
+    const output = svgBuilder(activeParts);
+    avatar.replaceChildren(output);
+  });
+
+  p.textContent = `${capitalize(partName)} ${newIndex + 1} / ${parts[partName].list.length}`;
 }
-
-// Setup download buttons
-document.getElementById('download').addEventListener('click', () => {
-  const svg = document.getElementById('avatar').firstElementChild;
-  exportPng(svg, 512);
-});
-
-document.getElementById('download-svg').addEventListener('click', () => {
-  const svg = document.getElementById('avatar').firstElementChild;
-  exportSvg(svg);
-});
 
 // Start
 window.onload = () => {
