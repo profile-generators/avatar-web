@@ -258,6 +258,33 @@ function preloadPart(partName, index) {
   avatar.replaceChildren(output);
 }
 
+async function requestServerAvatar() {
+  const data = {
+    parts: {},
+    palette: {}
+  };
+
+  for (let partName in partNames) {
+    data.parts[partName] = parts[partName].index
+  }
+
+  for (let color in palette) {
+    palette[color] = colorRules[className].getProperty('fill');
+  }
+
+  const response = await fetch(`/gen`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+
+  console.log(response);
+
+  return response;
+}
+
 // A static css spinner
 const spinner = document.createElement('div');
 spinner.classList.add('spinner');
@@ -313,6 +340,10 @@ async function run() {
     exportSvg(svg);
   });
 
+  document.getElementById('permalink').addEventListener('click', () => {
+    const response = requestServerAvatar();
+  });
+
   // Setup palette buttons: link color inputs to css properties
   for (let color of palette) {
     const input = document.getElementById(`${color}_color`);
@@ -348,7 +379,7 @@ async function run() {
 
   // Setup part selection
   for (let partName of partNames) {
-    if (['backhair', 'glasses', 'hat'].includes(partName)) {
+    if (['backhair'].includes(partName)) {
       continue;
     }
     const div = document.getElementById(`${partName}_part`);

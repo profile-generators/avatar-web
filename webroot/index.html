@@ -21,14 +21,16 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet"> 
 
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <h1>Avatar Creator</h1>
-
+    <header>
+        <h1>avatr.cc</h1>
+        <h2>Create your avatar!</h2>
+    </header>
     <div id="container">
         <div id="leftpanel">
             <h2>Select your parts</h2>
@@ -113,6 +115,22 @@
                         <div class="arrow right"></div>
                     </div>
                 </div>
+                <div class="partpicker">
+                    <img src="media/hat.svg" alt="hat" />
+                    <div id="hat_part">
+                        <div class="arrow left"></div>
+                        <p>Hat 0 / 0</p>
+                        <div class="arrow right"></div>
+                    </div>
+                </div>
+                <div class="partpicker">
+                    <img src="media/glasses.svg" alt="glasses" />
+                    <div id="glasses_part">
+                        <div class="arrow left"></div>
+                        <p>Glasses 0 / 0</p>
+                        <div class="arrow right"></div>
+                    </div>
+                </div>
             </div>
         </div>
         <div id="middlepanel">
@@ -122,6 +140,7 @@
             <div id="buttons">
                 <button id="download-png" class="btn">Download PNG</button>
                 <button id="download-svg" class="btn">Download SVG</button>
+                <button id="permalink" class="btn">Permalink</button>
             </div>
         </div>
         <div id="rightpanel">
@@ -171,7 +190,11 @@
         </div>
     </div>
 
-
+    <footer>
+        <p>Avatr.cc by <img src="media/avatar.png" alt="avatar" /> Crashoz &mdash;</p>
+        <p><a href="https://github.com/profile-generators/avatar-parts">Contribute on <img src="media/github.png" alt="github" /> GitHub &mdash;</a></p>
+        <p><a href="media/btc-qr.png">Donate BTC <img src="media/bitcoin.png" alt="bitcoin" /> 3BmwwByiY75XzkMykpgEhSnt2A6XyJu5pd</a></p>
+    </footer>
 
     <script src="scripts.js"></script>
 </body>
