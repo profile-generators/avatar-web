@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Avatar Creator</title>
+    <title>Avatr.cc - Create your avatar!</title>
     <meta name="description" content="A website to generate and customize avatars">
     <meta name="author" content="Xavier 'crashoz' Launey">
 
@@ -21,9 +21,10 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="palette.css">
+    <link rel="stylesheet" href="mobile.css">
 </head>
 
 <body>
@@ -31,169 +32,40 @@
         <h1>avatr.cc</h1>
         <h2>Create your avatar!</h2>
     </header>
-    <div id="container">
-        <div id="leftpanel">
-            <h2>Select your parts</h2>
-            <div id="parts">
-                <div class="partpicker">
-                    <img src="media/hair.svg" alt="hair" />
-                    <div id="hair_part">
-                        <div class="arrow left"></div>
-                        <p>Hair 0 / 0</p>
-                        <div class="arrow right"></div>
-                    </div>
-                </div>
-                <div class="partpicker">
-                    <img src="media/head.svg" alt="head" />
-                    <div id="head_part">
-                        <div class="arrow left"></div>
-                        <p>Head 0 / 0</p>
-                        <div class="arrow right"></div>
-                    </div>
-                </div>
-                <div class="partpicker">
-                    <img src="media/eyes.svg" alt="eyes" />
-                    <div id="eyes_part">
-                        <div class="arrow left"></div>
-                        <p>Eyes 0 / 0</p>
-                        <div class="arrow right"></div>
-                    </div>
-                </div>
-                <div class="partpicker">
-                    <img src="media/eyebrows.svg" alt="eyebrows" />
-                    <div id="eyebrows_part">
-                        <div class="arrow left"></div>
-                        <p>Eyebrows 0 / 0</p>
-                        <div class="arrow right"></div>
-                    </div>
-                </div>
-                <div class="partpicker">
-                    <img src="media/nose.svg" alt="nose" />
-                    <div id="nose_part">
-                        <div class="arrow left"></div>
-                        <p>Nose 0 / 0</p>
-                        <div class="arrow right"></div>
-                    </div>
-                </div>
-                <div class="partpicker">
-                    <img src="media/mouth.svg" alt="mouth" />
-                    <div id="mouth_part">
-                        <div class="arrow left"></div>
-                        <p>Mouth 0 / 0</p>
-                        <div class="arrow right"></div>
-                    </div>
-                </div>
-                <div class="partpicker">
-                    <img src="media/ears.svg" alt="ears" />
-                    <div id="ears_part">
-                        <div class="arrow left"></div>
-                        <p>Ears 0 / 0</p>
-                        <div class="arrow right"></div>
-                    </div>
-                </div>
-                <div class="partpicker">
-                    <img src="media/freckles.svg" alt="freckles" />
-                    <div id="freckles_part">
-                        <div class="arrow left"></div>
-                        <p>Freckles 0 / 0</p>
-                        <div class="arrow right"></div>
-                    </div>
-                </div>
-                <div class="partpicker">
-                    <img src="media/neck.svg" alt="neck" />
-                    <div id="neck_part">
-                        <div class="arrow left"></div>
-                        <p>Neck 0 / 0</p>
-                        <div class="arrow right"></div>
-                    </div>
-                </div>
-                <div class="partpicker">
-                    <img src="media/bust.svg" alt="bust" />
-                    <div id="bust_part">
-                        <div class="arrow left"></div>
-                        <p>Bust 0 / 0</p>
-                        <div class="arrow right"></div>
-                    </div>
-                </div>
-                <div class="partpicker">
-                    <img src="media/hat.svg" alt="hat" />
-                    <div id="hat_part">
-                        <div class="arrow left"></div>
-                        <p>Hat 0 / 0</p>
-                        <div class="arrow right"></div>
-                    </div>
-                </div>
-                <div class="partpicker">
-                    <img src="media/glasses.svg" alt="glasses" />
-                    <div id="glasses_part">
-                        <div class="arrow left"></div>
-                        <p>Glasses 0 / 0</p>
-                        <div class="arrow right"></div>
-                    </div>
-                </div>
-            </div>
+
+    <main>
+        <div id="avatar">
+            <div class="spinner"></div>
         </div>
-        <div id="middlepanel">
-            <div id="avatar">
-                <div class="spinner"></div>
+
+        <nav id="partpicker" class="controls">
+            <div class="arrow left"></div>
+            <p id="partname" class="btn">Bust 0 / 0</p>
+            <div class="arrow right"></div>
+        </nav>
+
+        <nav id="colorpicker" class="controls">
+            <div class="arrow left"></div>
+            <div>
+                <label id="colorname" for="color">Hair</label>
+                <input id="color" type="color" value="#ff0000" />
             </div>
-            <div id="buttons">
-                <button id="download-png" class="btn">Download PNG</button>
-                <button id="download-svg" class="btn">Download SVG</button>
-                <button id="permalink" class="btn">Permalink</button>
-            </div>
+            <div class="arrow right"></div>
+        </nav>
+
+        <div id="buttons">
+            <button id="download-png" class="btn">Download PNG</button>
+            <button id="download-svg" class="btn">Download SVG</button>
+            <button id="permalink" class="btn">Permalink</button>
         </div>
-        <div id="rightpanel">
-            <h2>Select your colors</h2>
-            <div id="colors">
-                <div class="colorpicker">
-                    <label for="flesh_color">Flesh</label>
-                    <input id="flesh_color" type="color" value="#ffffff" />
-                </div>
-                <div class="colorpicker">
-                    <label for="flesh2_color">Flesh 2</label>
-                    <input id="flesh2_color" type="color" value="#ffffff" />
-                </div>
-                <div class="colorpicker">
-                    <label for="flesh3_color">Flesh 3</label>
-                    <input id="flesh3_color" type="color" value="#ffffff" />
-                </div>
-                <div class="colorpicker">
-                    <label for="hair_color">Hair</label>
-                    <input id="hair_color" type="color" value="#ffffff" />
-                </div>
-                <div class="colorpicker">
-                    <label for="hair2_color">Hair 2</label>
-                    <input id="hair2_color" type="color" value="#ffffff" />
-                </div>
-                <div class="colorpicker">
-                    <label for="eye_color">Eye</label>
-                    <input id="eye_color" type="color" value="#ffffff" />
-                </div>
-                <div class="colorpicker">
-                    <label for="p1_color">Palette 1</label>
-                    <input id="p1_color" type="color" value="#ffffff" />
-                </div>
-                <div class="colorpicker">
-                    <label for="p2_color">Palette 2</label>
-                    <input id="p2_color" type="color" value="#ffffff" />
-                </div>
-                <div class="colorpicker">
-                    <label for="p3_color">Palette 3</label>
-                    <input id="p3_color" type="color" value="#ffffff" />
-                </div>
-                <div class="colorpicker">
-                    <label for="p4_color">Palette 4</label>
-                    <input id="p4_color" type="color" value="#ffffff" />
-                </div>
-            </div>
-        </div>
-    </div>
+    </main>
 
     <footer>
-        <p>Avatr.cc by <img src="media/avatar.png" alt="avatar" /> Crashoz &mdash;</p>
-        <p><a href="https://github.com/profile-generators/avatar-parts">Contribute on <img src="media/github.png" alt="github" /> GitHub &mdash;</a></p>
-        <p><a href="media/btc-qr.png">Donate BTC <img src="media/bitcoin.png" alt="bitcoin" /> 3BmwwByiY75XzkMykpgEhSnt2A6XyJu5pd</a></p>
+        <p><a href="/">avatr.cc</a> by <img src="media/avatar.png" alt="avatar" /> Crashoz</p>
+        <p><a href="https://github.com/profile-generators/avatar-parts">Contribute on <img src="media/github.png"
+                    alt="github" /> GitHub</a></p>
+        <p><a href="media/btc-qr.png">Donate BTC <img src="media/bitcoin.png" alt="bitcoin" />
+                3BmwwByiY75XzkMykpgEhSnt2A6XyJu5pd</a></p>
     </footer>
 
     <script src="scripts.js"></script>

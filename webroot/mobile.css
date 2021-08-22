@@ -1,17 +1,4 @@
-/* Avatar color palette */
-.flesh { fill: #ffe7bd }
-.flesh2 { fill: #f7cf88 }
-.flesh3 { fill: #ffdebd }
-.hair { fill: #803300 }
-.hair2 { fill: #383837 }
-.eye { fill: #d8d5ff }
-
-.p1 { fill: #006eb3 }
-.p2 { fill: #008de6 }
-.p3 { fill: #00b39e }
-.p4 { fill: #00e6cb }
-
-/* Website styles */
+/* Mobile styles */
 body {
   display: flex;
   flex-direction: column;
@@ -20,7 +7,7 @@ body {
 }
 
 header {
-  width: 20%;
+  width: 100%;
 }
 
 header h1 {
@@ -37,13 +24,18 @@ header h2 {
   margin: 0 0;
 }
 
+footer {
+  text-align: center;
+}
+
 footer img {
   height: 2em;
   vertical-align: middle;
 }
 
 footer p {
-  display: inline;
+  display: block;
+  margin: 0 0;
 }
 
 footer a {
@@ -51,93 +43,40 @@ footer a {
   color: inherit;
 }
 
-#container {
+main {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 50px;
+}
+
+#avatar svg {
   width: 100%;
-  margin-top: 50px;
-}
-
-#container h2 {
-  text-align: center;
-}
-
-/* Avatar panel */
-#middlepanel {
-  display: flex;
-  flex-direction: column;
-  width: 50%;
-  align-items: center;
-}
-
-#avatar {
-  display: flex;
-  width: 50%;
-  justify-content: center;
-}
-
-/* Color pickers panel */
-
-#rightpanel {
-  display: flex;
-  flex-direction: column;
-  width: 20%;
-  margin-right: 20px;
-}
-
-#colors {
-  display: flex;
-  flex-direction: column;
-  text-align: right;
-}
-
-.colorpicker {
-  padding-top: 10px;
-}
-
-/* Part pickers panel */
-
-#leftpanel {
-  display: flex;
-  flex-direction: column;
-  width: 30%;
-}
-
-#parts {
-  display: flex;
-  flex-wrap: wrap;
-
-}
-
-.partpicker {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  width: 40%;
-  height: 100px;
-  margin-right: 20px;
-}
-
-.partpicker img {
-  display: block;
-  margin-bottom: 10px;
   height: 100%;
-  max-width: 128px;
 }
 
-.partpicker p {
-  display: inline;
-  padding: 0 5px;
+.controls {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 80%;
+  text-align: center;
 }
 
-/*
-@media screen and (max-width: 1200px) {
-    #avatar, #colors {
-        width: 33%;
-    }
+#partname {
+  width: 50%;
 }
-*/
+
+#buttons {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+#buttons button {
+  margin-top: 5px;
+}
 
 .btn {
   padding: 5px 20px;
@@ -149,7 +88,9 @@ footer a {
   border: 1px solid transparent;
   color: #333;
   background-color: #fff;
-  border-color: #ccc;
+  border-radius: 10px;
+  box-shadow: 1px 1px 2px 2px rgba(0,0,0, 0.2);
+
 }
 
 .btn:focus {
@@ -202,20 +143,35 @@ footer a {
 /* CSS navigation arrows */
 
 .arrow {
-  display: inline-block;
-  border-right: 4px solid black;
-  border-bottom: 4px solid black;
-  width: 8px; height: 8px;
-}
-
-.arrow:hover {
-  border-color: #777777;
-}
-
-.arrow.left {
-  transform: rotate(135deg);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  box-shadow: 1px 1px 2px 2px rgba(0,0,0, 0.2);
+  cursor: pointer;
 }
 
 .arrow.right {
-  transform: rotate(-45deg);
+  background: url("media/chevron-right.svg") center no-repeat;
+}
+
+.arrow.left {
+  background: url("media/chevron-left.svg") center no-repeat;
+}
+
+.arrow:focus {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #8c8c8c;
+}
+
+.arrow:hover {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+
+.arrow:active {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
 }

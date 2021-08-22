@@ -327,6 +327,22 @@ const palette = [
 
 const classPalette = palette.map(c => `.${c}`);
 const colorRules = getLiveColorRules();
+let colorIndex = 0;
+let lastColorEventListener = null;
+
+let partNameIndex = 1;
+
+function changeColorPicker(color) {
+  const label = document.getElementById('colorname');
+  const input = document.getElementById('color');
+  input.setAttribute('value', rgb2hex(colorRules[`.${color}`].getPropertyValue('fill')));
+  if (lastColorEventListener != null) {
+    input.removeEventListener('input', lastColorEventListener);
+  }
+  lastColorEventListener = updateColor(color);
+  input.addEventListener('input', lastColorEventListener);
+  label.textContent = capitalize(color);
+}
 
 async function run() {
   // Setup download buttons
@@ -345,11 +361,19 @@ async function run() {
   });
 
   // Setup palette buttons: link color inputs to css properties
-  for (let color of palette) {
-    const input = document.getElementById(`${color}_color`);
-    input.setAttribute('value', rgb2hex(colorRules[`.${color}`].getPropertyValue('fill')));
-    input.addEventListener('input', updateColor);
-  }
+  const colorpicker = document.getElementById('colorpicker');
+  colorpicker.children[0].addEventListener('click', () => {
+    colorIndex = (colorIndex + 1) % palette.length;
+    changeColorPicker(palette[colorIndex]);
+  });
+  colorpicker.children[2].addEventListener('click', () => {
+    colorIndex = colorIndex - 1;
+    if (colorIndex < 0) {
+      colorIndex = palette.length - 1;
+    }
+    changeColorPicker(palette[colorIndex]);
+  });
+  changeColorPicker(palette[0]);
 
   // Retrieves parts, builds and displays an avatar
 
@@ -378,31 +402,36 @@ async function run() {
   avatar.replaceChildren(output);
 
   // Setup part selection
-  for (let partName of partNames) {
-    if (['backhair'].includes(partName)) {
-      continue;
+  const partpicker = document.getElementById('partpicker');
+
+  partpicker.children[0].addEventListener('click', () => {
+    updatePart(partNames[partNameIndex], -1);
+  });
+
+  partpicker.children[2].addEventListener('click', () => {
+    updatePart(partNames[partNameIndex], +1);
+  });
+
+  partpicker.children[1].addEventListener('click', () => {
+    partNameIndex = (partNameIndex + 1) % partNames.length;
+    if (partNameIndex == 0) {
+      partNameIndex++;
     }
-    const div = document.getElementById(`${partName}_part`);
-    console.log(partName)
-    const p = div.children[1];
+    const partName = partNames[partNameIndex];
+    partpicker.children[1].textContent =`${capitalize(partName)} 1 / ${parts[partName].list.length}`;
+  });
+}
 
-    p.textContent = `${capitalize(partName)} 1 / ${parts[partName].list.length}`;
-
-    const prev = div.children[0];
-    const next = div.children[2];
-    prev.addEventListener('click', () => updatePart(partName, -1));
-    next.addEventListener('click', () => updatePart(partName, +1));
+function updateColor(color) {
+  // Updates css palette rules to the new color
+  return (event) => {
+    colorRules[`.${color}`].setProperty('fill', event.target.value);
   }
 }
 
-function updateColor(event) {
-  // Updates css palette rules to the new color
-  const className = `.${event.target.id.split('_')[0]}`;
-  colorRules[className].setProperty('fill', event.target.value);
-}
-
 function updatePart(partName, delta) {
-  const div = document.getElementById(`${partName}_part`);
+  // Select next or previous part for partName
+  const div = document.getElementById('partpicker');
   const p = div.children[1];
 
   const len = parts[partName].list.length;
