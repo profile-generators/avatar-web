@@ -420,6 +420,10 @@ async function run() {
     const partName = partNames[partNameIndex];
     partpicker.children[1].textContent =`${capitalize(partName)} 1 / ${parts[partName].list.length}`;
   });
+
+  // Initial content
+  const partName = partNames[partNameIndex];
+  partpicker.children[1].textContent =`${capitalize(partName)} 1 / ${parts[partName].list.length}`;
 }
 
 function updateColor(color) {
