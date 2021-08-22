@@ -77,7 +77,7 @@ main {
 }
 
 #buttons button {
-  margin-top: 5px;
+  margin-top: 10px;
 }
 
 .btn {
@@ -165,4 +165,25 @@ main {
   color: #333;
   background-color: #e6e6e6;
   border-color: #adadad;
+}
+
+
+@media only screen and (min-width: 600px) {
+  header {
+    width: 50%;
+  }
+
+  .controls {
+    width: 50%;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  header {
+    width: 30%;
+  }
+
+  .controls {
+    width: 30%;
+  }
 }
