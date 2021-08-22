@@ -378,7 +378,7 @@ async function run() {
   // Retrieves parts, builds and displays an avatar
 
   const avatar = document.getElementById('avatar');
-  avatar.replaceChildren(spinner)
+  avatar.innerHTML = '<svg class="spinner" viewBox="0 0 124.19042 124.19042"><circle cx="62.09521" cy="62.09521" r="20" /></svg>';
 
   const partsPromise = [];
 

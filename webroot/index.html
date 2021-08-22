@@ -19,12 +19,15 @@
     <link rel="icon" href="/favicon.ico">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 
+    <!--
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
+    -->
 
-    <link rel="stylesheet" href="palette.css">
-    <link rel="stylesheet" href="mobile.css">
+    <link rel="stylesheet" rel="preload" href="palette.css">
+    <link rel="stylesheet" rel="preload" href="font.css">
+    <link rel="stylesheet" rel="preload" href="mobile.css">
 </head>
 
 <body>
@@ -35,7 +38,9 @@
 
     <main>
         <div id="avatar">
-            <div class="spinner"></div>
+            <svg class="spinner" viewBox="0 0 124.19042 124.19042">
+                <circle cx="62.09521" cy="62.09521" r="20" />
+            </svg>
         </div>
 
         <nav id="partpicker" class="controls">
