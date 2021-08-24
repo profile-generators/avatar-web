@@ -328,19 +328,20 @@ const palette = [
 const classPalette = palette.map(c => `.${c}`);
 const colorRules = getLiveColorRules();
 let colorIndex = 0;
-let lastColorEventListener = null;
-
 let partNameIndex = 1;
 
 function changeColorPicker(color) {
   const label = document.getElementById('colorname');
-  const input = document.getElementById('color');
+  const container = document.getElementById('colorform');
+
+  document.getElementById('color').remove();
+
+  const input = document.createElement('input');
+  input.setAttribute('id', 'color');
+  input.setAttribute('type', 'color');
   input.setAttribute('value', rgb2hex(colorRules[`.${color}`].getPropertyValue('fill')));
-  if (lastColorEventListener != null) {
-    input.removeEventListener('input', lastColorEventListener);
-  }
-  lastColorEventListener = updateColor(color);
-  input.addEventListener('input', lastColorEventListener);
+  input.addEventListener('input', updateColor(color));
+  container.appendChild(input);
   label.textContent = capitalize(color);
 }
 
@@ -363,14 +364,14 @@ async function run() {
   // Setup palette buttons: link color inputs to css properties
   const colorpicker = document.getElementById('colorpicker');
   colorpicker.children[0].addEventListener('click', () => {
-    colorIndex = (colorIndex + 1) % palette.length;
-    changeColorPicker(palette[colorIndex]);
-  });
-  colorpicker.children[2].addEventListener('click', () => {
     colorIndex = colorIndex - 1;
     if (colorIndex < 0) {
       colorIndex = palette.length - 1;
     }
+    changeColorPicker(palette[colorIndex]);
+  });
+  colorpicker.children[2].addEventListener('click', () => {
+    colorIndex = (colorIndex + 1) % palette.length;
     changeColorPicker(palette[colorIndex]);
   });
   changeColorPicker(palette[0]);
