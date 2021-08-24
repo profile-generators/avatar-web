@@ -207,7 +207,7 @@ let activeParts = [];
 async function getPartsList(part) {
   // Retrieves all the variants of part from the parts server
 
-  const response = await fetch(`/parts/${part}/`);
+  const response = await fetch(`/parts/${part}/index.html`);
   const html = await response.text();
   const root = document.createElement('div');
   root.innerHTML = html;
