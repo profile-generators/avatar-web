@@ -74,6 +74,13 @@ main {
   width: 50%;
 }
 
+#colorform {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 40%;
+}
+
 #buttons {
   display: flex;
   flex-direction: column;
@@ -176,10 +183,18 @@ main {
   header, .controls, #avatar {
     width: 50%;
   }
+  
+  #colorform {
+    width: 40%;
+  }
 }
 
 @media only screen and (min-width: 1024px) {
   header, .controls, #avatar {
+    width: 30%;
+  }
+
+  #colorform {
     width: 30%;
   }
 }
