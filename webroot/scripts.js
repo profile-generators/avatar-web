@@ -252,25 +252,29 @@ function preloadPart(partName, index) {
     }
     queue.unshift(index);
   }
-
+  
+  /*
   const output = svgBuilder(activeParts);
   const avatar = document.getElementById('avatar');
   avatar.replaceChildren(output);
+  */
 }
 
 async function requestServerAvatar() {
   const data = {
-    parts: {},
+    parts: [],
     palette: {}
   };
 
-  for (let partName in partNames) {
-    data.parts[partName] = parts[partName].index
+  for (let partName of partNames) {
+    data.parts.push(parts[partName].index);
   }
 
-  for (let color in palette) {
-    palette[color] = colorRules[className].getProperty('fill');
+  for (let color of palette) {
+    data.palette[color] = rgb2hex(colorRules[`.${color}`].getPropertyValue('fill'));
   }
+
+  console.log(data);
 
   const response = await fetch(`/gen`, {
     method: 'POST',
@@ -279,10 +283,16 @@ async function requestServerAvatar() {
     },
     body: JSON.stringify(data),
   });
-
+  
   console.log(response);
 
-  return response;
+  if (!response.ok) {
+    throw new Error("network error")
+  }
+
+  const text = await response.text();
+  console.log(text);
+  return text;
 }
 
 // A static css spinner
@@ -357,8 +367,17 @@ async function run() {
     exportSvg(svg);
   });
 
-  document.getElementById('permalink').addEventListener('click', () => {
-    const response = requestServerAvatar();
+  document.getElementById('permalink').addEventListener('click', async (e) => {
+    try {
+      const response = await requestServerAvatar();
+
+      const link = document.createElement('a');
+      link.href = response;
+      link.textContent = response;
+      e.target.replaceWith(link);
+    } catch (e) {
+
+    }
   });
 
   // Setup palette buttons: link color inputs to css properties
@@ -381,20 +400,22 @@ async function run() {
   const avatar = document.getElementById('avatar');
   avatar.innerHTML = '<svg class="spinner" viewBox="0 0 124.19042 124.19042"><circle cx="62.09521" cy="62.09521" r="20" /></svg>';
 
+
   const partsPromise = [];
-
   for (let partName of partNames) {
-    const partList = await getPartsList(partName);
+    partsPromise.push((async () => {
+      const partList = await getPartsList(partName);
 
-    parts[partName] = {
-      list: partList,
-      index: 0,
-      cache: {},
-      queue: []
-    };
+      parts[partName] = {
+        list: partList,
+        index: 0,
+        cache: {},
+        queue: []
+      };
 
-    preloadPart(partName, 0);
-    partsPromise.push(parts[partName].cache[0]);
+      preloadPart(partName, 0);
+      return parts[partName].cache[0];
+    })());
   }
 
   activeParts = await Promise.all(partsPromise);
@@ -434,7 +455,7 @@ function updateColor(color) {
   }
 }
 
-function updatePart(partName, delta) {
+async function updatePart(partName, delta) {
   // Select next or previous part for partName
   const div = document.getElementById('partpicker');
   const p = div.children[1];
@@ -449,18 +470,18 @@ function updatePart(partName, delta) {
       continue;
     }
 
-    console.log('preload', partName, index);
     preloadPart(partName, index);
   }
 
-  parts[partName].index = newIndex;
-  parts[partName].cache[newIndex].then(part => {
-    activeParts[partNames.indexOf(partName)] = part;
-    const output = svgBuilder(activeParts);
-    avatar.replaceChildren(output);
-  });
-
+  // update part number
   p.textContent = `${capitalize(partName)} ${newIndex + 1} / ${parts[partName].list.length}`;
+
+  parts[partName].index = newIndex;
+  const part = await parts[partName].cache[newIndex]
+
+  activeParts[partNames.indexOf(partName)] = part;
+  const output = svgBuilder(activeParts);
+  avatar.replaceChildren(output);
 }
 
 // Start
