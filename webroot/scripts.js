@@ -33,6 +33,12 @@ function capitalize(string) {
     .join(' ');
 }
 
+async function sleep(millis) {
+  return new Promise((resolve, reject) => {
+    setTimeout(resolve, millis);
+  });
+}
+
 function svgParser(svgString) {
   // Parses svgString to extract the part layer and the creator
   const root = document.createElement('div');
@@ -233,17 +239,13 @@ async function getPart(part, name) {
 }
 
 function preloadPart(partName, index) {
-  console.log('preload', partName, index);
-
   const { list, cache, queue } = parts[partName];
 
   if (index in cache) {
-    console.log('cache hit');
     const part = cache[index];
     queue.splice(queue.indexOf(index), 1);
     queue.unshift(index);
   } else {
-    console.log('cache miss');
     const part = getPart(partName, list[index]['name']);
 
     cache[index] = part;
@@ -274,8 +276,6 @@ async function requestServerAvatar() {
     data.palette[color] = rgb2hex(colorRules[`.${color}`].getPropertyValue('fill'));
   }
 
-  console.log(data);
-
   const response = await fetch(`/gen`, {
     method: 'POST',
     headers: {
@@ -284,20 +284,13 @@ async function requestServerAvatar() {
     body: JSON.stringify(data),
   });
   
-  console.log(response);
-
   if (!response.ok) {
     throw new Error("network error")
   }
 
   const text = await response.text();
-  console.log(text);
   return text;
 }
-
-// A static css spinner
-const spinner = document.createElement('div');
-spinner.classList.add('spinner');
 
 function getLiveColorRules() {
   // Get live css rules for the color palette
@@ -355,6 +348,17 @@ function changeColorPicker(color) {
   label.textContent = capitalize(color);
 }
 
+//const spinner = '<svg class="spinner" viewBox="0 0 124.19042 124.19042"><circle cx="62.09521" cy="62.09521" r="20" /></svg>';
+
+const spinner = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+spinner.classList.add('spinner');
+spinner.setAttribute('viewBox', '0 0 124.19042 124.19042');
+const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+circle.setAttribute('cx', '62.09521');
+circle.setAttribute('cy', '62.09521');
+circle.setAttribute('r', '20');
+spinner.appendChild(circle);
+
 async function run() {
   // Setup download buttons
   document.getElementById('download-png').addEventListener('click', () => {
@@ -368,15 +372,22 @@ async function run() {
   });
 
   document.getElementById('permalink').addEventListener('click', async (e) => {
+    const permalinkSpinner = spinner.cloneNode(true);
+    e.target.replaceWith(permalinkSpinner);
+
     try {
       const response = await requestServerAvatar();
 
+      await sleep(3000);
       const link = document.createElement('a');
       link.href = response;
-      link.textContent = response;
-      e.target.replaceWith(link);
+      link.textContent = `${window.location.protocol}//${window.location.host}/${response}`;
+      permalinkSpinner.replaceWith(link);
     } catch (e) {
-
+      const error = document.createElement('p');
+      error.classList.add('error');
+      error.textContent = 'permalink failed';
+      permalinkSpinner.replaceWith(error);
     }
   });
 
@@ -398,7 +409,7 @@ async function run() {
   // Retrieves parts, builds and displays an avatar
 
   const avatar = document.getElementById('avatar');
-  avatar.innerHTML = '<svg class="spinner" viewBox="0 0 124.19042 124.19042"><circle cx="62.09521" cy="62.09521" r="20" /></svg>';
+  avatar.replaceChildren(spinner);
 
 
   const partsPromise = [];

@@ -91,9 +91,18 @@ main {
   margin-top: 10px;
 }
 
+#buttons svg {
+  height: 40px;
+}
+
 #buttons a {
   padding: 20px 20px;
   text-align: center;
+}
+
+#buttons .error {
+  text-align: center;
+  color: #ff0000;
 }
 
 .btn {
