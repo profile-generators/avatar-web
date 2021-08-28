@@ -254,12 +254,6 @@ function preloadPart(partName, index) {
     }
     queue.unshift(index);
   }
-  
-  /*
-  const output = svgBuilder(activeParts);
-  const avatar = document.getElementById('avatar');
-  avatar.replaceChildren(output);
-  */
 }
 
 async function requestServerAvatar() {
@@ -434,6 +428,38 @@ async function run() {
   const output = svgBuilder(activeParts);
   avatar.replaceChildren(output);
 
+  // Setup hair - backhair sync
+  const backhairList = parts['backhair'].list;
+  const syncedBackhairList = [];
+
+  const backhairDefault = backhairList[0];
+  let i = 0;
+  let j = 0;
+  let n = 0;
+
+  while (true) {
+    console.log(i, j, n)
+    if (i < n) {
+      syncedBackhairList.push(backhairDefault);
+    } else {
+      syncedBackhairList.push(backhairList[j]);
+      j++;
+
+      if (j >= backhairList.length) {
+        n = parts['hair'].list.length;
+      } else {
+        n = parseInt(backhairList[j].name.substring(9, 13));
+      }
+    }
+
+    i++;
+    if (i >= parts['hair'].list.length) {
+      break;
+    }
+  }
+
+  parts['backhair'].list = syncedBackhairList;
+
   // Setup part selection
   const partpicker = document.getElementById('partpicker');
 
@@ -482,6 +508,11 @@ async function updatePart(partName, delta) {
     }
 
     preloadPart(partName, index);
+    
+    // Sync backhair with hair
+    if (partName == 'hair') {
+      preloadPart('backhair', index);
+    }
   }
 
   // update part number
@@ -489,8 +520,14 @@ async function updatePart(partName, delta) {
 
   parts[partName].index = newIndex;
   const part = await parts[partName].cache[newIndex]
-
   activeParts[partNames.indexOf(partName)] = part;
+
+  if (partName == 'hair') {
+    parts['backhair'].index = newIndex;
+    const part = await parts['backhair'].cache[newIndex]
+    activeParts[partNames.indexOf('backhair')] = part;
+  }
+
   const output = svgBuilder(activeParts);
   avatar.replaceChildren(output);
 }
