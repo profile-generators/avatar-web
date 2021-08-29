@@ -441,7 +441,6 @@ async function run() {
   let n = 0;
 
   while (true) {
-    console.log(i, j, n)
     if (i < n) {
       syncedBackhairList.push(backhairDefault);
     } else {
@@ -504,7 +503,7 @@ async function updatePart(partName, delta) {
   let newIndex = parts[partName].index + delta;
   newIndex = newIndex < 0 ? len + newIndex : newIndex >= len ? newIndex - len : newIndex;
 
-  for (let i = newIndex - PRELOAD_SIZE; i < newIndex + PRELOAD_SIZE; i++) {
+  for (let i = newIndex - PRELOAD_SIZE; i <= newIndex + PRELOAD_SIZE; i++) {
     const index = i < 0 ? len + i : i >= len ? i - len : i;
     if (index < 0 || index >= len) {
       continue;
@@ -514,7 +513,9 @@ async function updatePart(partName, delta) {
     
     // Sync backhair with hair
     if (partName == 'hair') {
-      preloadPart('backhair', index);
+      const backhairName = parts['backhair'].list[index].name;
+      const backhairIndex = parseInt(backhairName.split('_')[1].substring(0, 4));
+      preloadPart('backhair', backhairIndex);
     }
   }
 
@@ -527,7 +528,9 @@ async function updatePart(partName, delta) {
 
   if (partName == 'hair') {
     parts['backhair'].index = newIndex;
-    const part = await parts['backhair'].cache[newIndex]
+    const backhairName = parts['backhair'].list[newIndex].name;
+    const backhairIndex = parseInt(backhairName.split('_')[1].substring(0, 4));
+    const part = await parts['backhair'].cache[backhairIndex]
     activeParts[partNames.indexOf('backhair')] = part;
   }
 
