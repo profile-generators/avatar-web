@@ -263,7 +263,10 @@ async function requestServerAvatar() {
   };
 
   for (let partName of partNames) {
-    data.parts.push(parts[partName].index);
+    const index = parts[partName].index;
+    const name = parts[partName].list[index].name;
+    const partIndex = parseInt(name.split('_')[1].substring(0, 4));
+    data.parts.push(partIndex);
   }
 
   for (let color of palette) {
