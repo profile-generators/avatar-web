@@ -473,18 +473,15 @@ async function run() {
     updatePart(partNames[partNameIndex], +1);
   });
 
-  partpicker.children[1].addEventListener('click', () => {
-    partNameIndex = (partNameIndex + 1) % partNames.length;
-    if (partNameIndex == 0) {
-      partNameIndex++;
-    }
-    const partName = partNames[partNameIndex];
-    partpicker.children[1].textContent =`${capitalize(partName)} 1 / ${parts[partName].list.length}`;
+  partpicker.children[1].addEventListener('change', (e) => {
+    partNameIndex = parseInt(e.target.value);
   });
 
   // Initial content
-  const partName = partNames[partNameIndex];
-  partpicker.children[1].textContent =`${capitalize(partName)} 1 / ${parts[partName].list.length}`;
+  for (let i=1; i<partNames.length; i++) {
+    const partName = partNames[i];
+    partpicker.children[1].children[i - 1].textContent =`${capitalize(partName)} 1 / ${parts[partName].list.length}`;
+  }
 }
 
 function updateColor(color) {
@@ -496,8 +493,9 @@ function updateColor(color) {
 
 async function updatePart(partName, delta) {
   // Select next or previous part for partName
-  const div = document.getElementById('partpicker');
-  const p = div.children[1];
+  const partpicker = document.getElementById('partpicker');
+
+  console.log(partNameIndex, partName)
 
   const len = parts[partName].list.length;
   let newIndex = parts[partName].index + delta;
@@ -520,7 +518,8 @@ async function updatePart(partName, delta) {
   }
 
   // update part number
-  p.textContent = `${capitalize(partName)} ${newIndex + 1} / ${parts[partName].list.length}`;
+  partpicker.children[1].children[partNameIndex - 1].textContent =`${capitalize(partName)} ${newIndex + 1} / ${parts[partName].list.length}`;
+
 
   parts[partName].index = newIndex;
   const part = await parts[partName].cache[newIndex]

@@ -70,8 +70,22 @@ main {
   text-align: center;
 }
 
-#partname {
+#partpicker {
+  margin-bottom: 10px;
+}
+
+#part {
   width: 50%;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+
+#part:focus {
+  background: #ffffff;
+}
+
+#part:focus-visible {
+  outline: none;
 }
 
 #colorform {
@@ -112,7 +126,7 @@ main {
   white-space: nowrap;
   vertical-align: middle;
   cursor: pointer;
-  border: 1px solid transparent;
+  border: none;
   color: #333;
   background-color: #fff;
   border-radius: 10px;
